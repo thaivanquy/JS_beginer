@@ -1,0 +1,75 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 13px;
+    width: 500px;
+    margin: auto;
+}
+
+
+.title {
+    text-align: center;
+}
+
+.form-container {
+    padding: 50px 60px;
+    margin-top: 20vh;
+    box-shadow: -8px 12px 18px 0 rgb(25, 42, 70, 0.30);
+    border-radius: 30px;
+}
+
+.form-singup {
+    padding: 50px 60px;
+    margin-top: 40px;
+    box-shadow: -8px 12px 18px 0 rgb(25, 42, 70, 0.30);
+    border-radius: 30px;
+}
+
+.btn {
+    width: 355px;
+    border-radius: 10px;
+}
+
+.btn-reg {
+    width: 380px;
+    border-radius: 10px;
+}
+
+.form-check {
+    float: left;
+}
+
+
+.form-forgot-password {
+    float: right;
+    font-style: italic;
+}
+
+.link-reset-pass {
+    text-decoration: none;
+}
+
+.link-reset-pass:hover {
+    text-decoration: underline;
+}
+
+.link-reg {
+    text-decoration: none;
+}
+
+.link-reg:hover {
+    text-decoration: underline;
+}
+
+.form-reg {
+    margin-top: 20px;
+}
+
+.comeback {
+    margin-top: 20px;
+    float: right;
+    text-decoration: none;
+}
+
+.comeback:hover {
+    text-decoration: underline;
+}
