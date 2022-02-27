@@ -45,27 +45,56 @@ var users = [
     }
 ];
 
-function loadUser() {
-    var user = '';
-    users.forEach(function(element) {
-        user+='<tr>';
-        user+='<td>'+element['id']+'</td>';
-        user+='<td>'+element['name']+'</td>';
-        user+='<td>'+element['age']+'</td>';
-        user+='<td>'+element['address']+'</td>';
-        user+='</tr>';
-    });
-    document.getElementById('dsuser').innerHTML = user;
-}
-loadUser();
 
+//search
+function loadUser(arrUser) {
+	let userEle = '';
+	arrUser.forEach(element => {
+		userEle += `
+      <tr>
+          <td>${element['id']}</td>
+          <td>${element['name']}</td>
+          <td>${element['age']}</td>
+          <td>${element['address']}</td>
+      `;
+	});
+	document.getElementById('user-list').innerHTML = userEle;
+}
+
+loadUser(users);
 
 //search
 var search_user = document.getElementById('searchbutton');
-search_user.addEventListener('keyup', function(){
-    
+search_user.addEventListener('keyup', function (e) {
+	let value = e.target.value || '';
+	value = stringToSlug(value.trim().toLowerCase());
+	const userFilter = users.filter(u => {
+
+		const uName = stringToSlug(u.name.toLowerCase());
+		const uAddress = stringToSlug(u.address.toLowerCase());
+
+		 return uName.includes(value) || uAddress.includes(value)
+	});
+	loadUser(userFilter);
 });
 
+// remove Vietnamese
+// source https://gist.github.com/bluzky/b8c205c98ff3318907b30c3e0da4bf3f
+function stringToSlug(str) {
+	// remove accents
+	var from = "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
+		to   = "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
+	for (var i=0, l=from.length ; i < l ; i++) {
+		str = str.replace(RegExp(from[i], "gi"), to[i]);
+	}
+
+	str = str.toLowerCase()
+		.trim()
+		.replace(/[^a-z0-9\-]/g, '')
+		.replace(/-+/g, '');
+
+	return str;
+}
 
 
 
