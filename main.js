@@ -19,49 +19,60 @@ btn.addEventListener('click', function() {
 });
 */
 var users = [
-    {
-        id : 1,
-        name : 'Quý',
-        age: 22,
-        address: 'Bạc liêu'
-    },
-    {
-        id : 2,
-        name : 'Khoa',
-        age : 16,
-        address: 'Cà mau'
-    },
-    {
-        id : 3,
-        name : 'Vũ',
-        age : 30,
-        address : 'Sóc trăng'
-    },
-    {
-        id : 4,
-        name : 'Sơn',
-        age: 17,
-        address : 'Cần thơ'
-    }
+	{
+		id: 1,
+		name: 'Quý',
+		age: 22,
+		address: 'Bạc liêu'
+	},
+	{
+		id: 2,
+		name: 'Khoa',
+		age: 16,
+		address: 'Cà mau'
+	},
+	{
+		id: 3,
+		name: 'Vũ',
+		age: 30,
+		address: 'Sóc trăng'
+	},
+	{
+		id: 4,
+		name: 'Sơn',
+		age: 17,
+		address: 'Cần thơ'
+	}
 ];
 
-
-//search
 function loadUser(arrUser) {
 	let userEle = '';
 	arrUser.forEach(element => {
 		userEle += `
-      <tr>
-          <td>${element['id']}</td>
+      <tr id="u-${element['id']}" data-action="view-user-detail" data-value="${element['id']}">
+          <td data-action="view-user">${element['id']}</td>
           <td>${element['name']}</td>
           <td>${element['age']}</td>
           <td>${element['address']}</td>
-      `;
+      </tr>`;
 	});
 	document.getElementById('user-list').innerHTML = userEle;
+	const trs = document.querySelectorAll('tr[data-action="view-user-detail"]');
+	for (const tr of trs) {
+		tr.addEventListener('click', function(_e) {
+			const uID = _e.currentTarget.getAttribute('data-value');
+			newTab();
+		})
+	}
+}
+loadUser(users);
+
+//newtab
+function newTab(){
+	var urlString = "http://127.0.0.1:5500/user_detail.html";
+	window.open(urlString);
 }
 
-loadUser(users);
 
 //search
 var search_user = document.getElementById('searchbutton');
@@ -97,5 +108,4 @@ function stringToSlug(str) {
 }
 
 
-
-
+//view detail_user
