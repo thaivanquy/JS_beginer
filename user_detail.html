@@ -79,24 +79,6 @@
             </div>
         </div>
         </div>         
-        
-        <script>
-            function getParameterByName(name, url = window.location.href) {
-                name = name.replace(/[\[\]]/g, '\\$&');
-                var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-                    results = regex.exec(url);
-                if (!results) return null;
-                if (!results[2]) return '';
-                return decodeURIComponent(results[2].replace(/\+/g, ' '));
-            }
-            document.title = 'Users' + getParameterByName('id');
-            document.querySelector('#id').innerHTML = getParameterByName('id');
-            document.title = 'Users' + getParameterByName('name');
-            document.querySelector('#name').innerHTML = getParameterByName('name');
-            document.title = 'Users' + getParameterByName('age');
-            document.querySelector('#age').innerHTML = getParameterByName('age');
-            document.title = 'Users' + getParameterByName('address');
-            document.querySelector('#address').innerHTML = getParameterByName('address');
-        </script>
+        <script src="./user_detail.js"></script>
 </body>
 </html>

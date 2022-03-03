@@ -61,17 +61,12 @@ function loadUser(arrUser) {
 	for (const tr of trs) {
 		tr.addEventListener('click', function(_e) {
 			const uID = _e.currentTarget.getAttribute('data-value');
-			newTab();
+			window.open(`./user_detail.html?user_id=${uID}`,'_bank');
 		})
 	}
 }
 loadUser(users);
 
-//newtab
-function newTab(){
-	var urlString = "http://127.0.0.1:5500/user_detail.html";
-	window.open(urlString);
-}
 
 
 //search
