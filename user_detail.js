@@ -1,30 +1,9 @@
-var users = [
-	{
-		id: 1,
-		name: 'Quý',
-		age: 22,
-		address: 'Bạc liêu'
-	},
-	{
-		id: 2,
-		name: 'Khoa',
-		age: 16,
-		address: 'Cà mau'
-	},
-	{
-		id: 3,
-		name: 'Vũ',
-		age: 30,
-		address: 'Sóc trăng'
-	},
-	{
-		id: 4,
-		name: 'Sơn',
-		age: 17,
-		address: 'Cần thơ'
-	}
-];
-//
+var users = JSON.parse(localStorage.getItem('users'));
+if (users == null){
+	window.close();
+	window.open('./page-user.html');
+}
+
 
 const params = new URLSearchParams(window.location.search);
 var user_detailID = params.get("user_id");
@@ -40,5 +19,4 @@ for (let value of values){
 		document.getElementById('age').innerHTML = vAge;
 		document.getElementById('address').innerHTML = vAddress;
 	}
-	
 }

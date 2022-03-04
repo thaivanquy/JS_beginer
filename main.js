@@ -45,6 +45,10 @@ var users = [
 	}
 ];
 
+localStorage.setItem('users', JSON.stringify(users));
+// var users = JSON.parse(localStorage.getItem('users'));
+
+
 function loadUser(arrUser) {
 	let userEle = '';
 	arrUser.forEach(element => {
