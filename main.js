@@ -45,10 +45,10 @@ var users = [
 	}
 ];
 
-localStorage.setItem('users', JSON.stringify(users));
-// var users = JSON.parse(localStorage.getItem('users'));
+//localStorage.setItem('users', JSON.stringify(users));
+var users = JSON.parse(localStorage.getItem('users'));
 
-
+// onclick="deleteUser(${element['id']})"
 function loadUser(arrUser) {
 	let userEle = '';
 	arrUser.forEach(element => {
@@ -58,6 +58,8 @@ function loadUser(arrUser) {
           <td>${element['name']}</td>
           <td>${element['age']}</td>
           <td>${element['address']}</td>
+		  <td><button type="button" class="btn btn-warning" id="btn-edit">Sửa</button></td>
+		  <td><button type="button" class="btn btn-danger" id="btn-del">Xóa</button></td>	
       </tr>`;
 	});
 	document.getElementById('user-list').innerHTML = userEle;
@@ -106,5 +108,40 @@ function stringToSlug(str) {
 	return str;
 }
 
+//Add user
+var data = users;
+function addUser(){
+	var aId = Number(document.getElementById('id').value);
+	var aName = document.getElementById('name').value;
+	var aAge = Number(document.getElementById('age').value);
+	var aAddress = document.getElementById('address').value;
+	var item = {
+		id : aId,
+		name : aName,
+		age : aAge,
+		address : aAddress
+	};	
+	data.push(item);
+	loadUser(data);
+	localStorage.setItem('users', JSON.stringify(users));
+}
 
-//view detail_user
+
+//Delete user
+// function deleteUser(id){
+// 	var deUser = data;
+// 	for (var i = 0; i < deUser.length; i++){
+// 		if (deUser[i].id==id){
+// 			deUser.splice(i,1);
+// 		}
+// 	}
+// 	loadUser(deUser);
+// 	localStorage.setItem('users', JSON.stringify(users));
+// }
+
+var btndels = document.querySelectorAll(".btn-danger");
+for (const btndel of btndels){
+	btndel.addEventListener('click', function(e){
+		e.preventDefault();	
+	})
+}

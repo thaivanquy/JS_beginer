@@ -11,3 +11,12 @@
     box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.3);
 }			                                                      
 
+.add-user {
+    margin: 30px 35%;
+    width: 400px;
+}
+
+.btn-primary {
+    margin-top: 20px;
+    width: 400px;
+}
