@@ -56,8 +56,8 @@ function loadUser(arrUser) {
           <td ><a href="./user_detail.html?user_id=${element['id']}" target="_bank"> ${element['name']} </a></td>
           <td>${element['age']}</td>
           <td>${element['address']}</td>
-		  <td><button type="button" class="btn btn-warning" id="btn-edit" 
-		  data-bs-toggle="modal" data-bs-target="#exampleModal" 
+		  <td><button type="button" class="btn btn-warning"
+		  data-bs-toggle="modal" data-bs-target="#modalUpdateUser"
 		  data-bs-whatever="@mdo" onclick="editUser(${element['id']})">Sửa</button></td>
 		  <td><button type="button" class="btn btn-danger" data-action="btn-modal-delete" 
 		  id="btn-del" data-value="${element['id']}">Xóa</button></td>	
@@ -77,8 +77,8 @@ loadUser(users);
 
 
 //search
-var search_user = document.getElementById('searchbutton');
-search_user.addEventListener('keyup', function (e) {
+var btnSearchUser = document.getElementById('searchbutton');
+btnSearchUser.addEventListener('keyup', function (e) {
 	let value = e.target.value || '';
 	value = stringToSlug(value.trim().toLowerCase());
 	const userFilter = users.filter(u => {
@@ -110,23 +110,55 @@ function stringToSlug(str) {
 }
 
 //Add user
-var data = users;
+// var data = users;
+
+// set last user id
+function setLastUserId() {
+	const lastUserId = users[users.length - 1].id + 1;
+	$("#id").val(lastUserId);
+}
+setLastUserId();
+
+function resetForm() {
+	setLastUserId();
+	$("#name").val('');
+	$("#age").val('');
+	$("#address").val('');
+}
+
 function addUser(){
-	var aId = Number(document.getElementById('id').value);
+	var aId = Number($("#id").val());
 	var aName = document.getElementById('name').value;
 	var aAge = Number(document.getElementById('age').value);
 	var aAddress = document.getElementById('address').value;
-	var item = {
+	var user = {
 		id : aId,
 		name : aName,
 		age : aAge,
 		address : aAddress
-	};	
-	data.push(item);
-	loadUser(data);
-	localStorage.setItem('users', JSON.stringify(users));
+	};
+	if (aName === '' || aAge === '' || aAddress === '') {
+		alert('Bạn chưa nhập giá trị!!!');
+	} else {
+		users.push(user);
+		updateUserStorage(users);
+		loadUser(users);
+		resetForm()
+	}
 }
 
+function updateUserStorage(_users) {
+	localStorage.setItem('users', JSON.stringify(_users));
+}
+
+function getUserStorage() {
+	return JSON.parse(localStorage.getItem('users'));
+}
+
+function getUserById(uID) {
+	const users = getUserStorage();
+	return users.find(u => Number(u.id) === Number(uID)); //
+}
 
 //Delete user
 // function deleteUser(id){
@@ -141,30 +173,61 @@ function addUser(){
 // }
 
 //Modal delete
-$('[data-action="btn-modal-delete"]').click(function(e){
+$('button[data-action="btn-modal-delete"]').click(function(e){
 	$("#modalDelete").modal('show');
-	const dID = e.currentTarget.getAttribute('data-value');
-	console.log(dID);
+	const dID = Number(e.currentTarget.getAttribute('data-value'));
+	$('#btn-delete').data('user-id', dID);
 });
 
-const dUser = document.getElementById('btn-delete');
-dUser.addEventListener('click', function(){
-
+$('#btn-delete').click(function(id) {
+	const uID = $(this).data('user-id');
+	let users = getUserStorage();
+	const _user = getUserById(uID);
+	if (_user === undefined) {
+		alert('User Not Found !!!');
+		return;
+	}
+	for (var i = 0; i < users.length; i++){
+		if (users[i].id === _user.id){
+			users.splice(i,1);
+		}
+	}
+	updateUserStorage(users);
+	loadUser(users);
+	$("#modalDelete").modal('hide');
 })
+
 
 //Edit user
 function editUser(id){
-	var deUser = data;
-	var btnedit = document.getElementById('btn-edit');
-	btnedit.addEventListener('click', function(e){
-		
-	})
-	for (var i = 0; i < deUser.length; i++){
-		if (deUser[i].id==id){
-			document.getElementById('editid').value = data[i].id;
-			document.getElementById('editname').value = data[i].name;
-			document.getElementById('editage').value = data[i].age;
-			document.getElementById('editaddress').value = data[i].address;
-		}
+	const users = getUserStorage();
+	const _user = getUserById(id);
+	if (_user === undefined) {
+		alert('User Not Found !!!');
+		return;
 	}
+	$('#editid').val(_user.id).attr('disabled', true);
+	$('#editname').val(_user.name);
+	$('#editage').val(_user.age);
+	$('#editaddress').val(_user.address);
+	$('#btn-edit').data('user-id', id);
 }
+
+$('#btn-edit').click(function(e) {
+	const uID = $(this).data('user-id'); //
+	let users = getUserStorage();
+	const _user = getUserById(uID);
+	if (_user === undefined) {
+		alert('User Not Found !!!');
+		return;
+	}
+	_user.name = $('#editname').val();
+	_user.age = $('#editage').val();
+	_user.address = $('#editaddress').val();
+	users = users.map(u => {
+		return Number(u.id) === Number(uID) ? _user : u //
+	})
+	updateUserStorage(users);
+	loadUser(users);
+	$("#modalUpdateUser").modal('hide');
+});
