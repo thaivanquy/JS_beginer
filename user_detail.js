@@ -4,7 +4,6 @@ if (users == null){
 	window.open('./page-user.html');
 }
 
-
 const params = new URLSearchParams(window.location.search);
 var user_detailID = params.get("user_id");
 document.getElementById('id').innerHTML = user_detailID;

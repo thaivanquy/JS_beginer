@@ -1,23 +1,4 @@
-/*
-var myUser = 'admin';
-var myPass = '123';
 
-var inputUsername = document.getElementById('exampleInputEmail1');
-var inputPassword = document.getElementById('exampleInputPassword1');
-
-var btn = document.getElementById('login');
-
-btn.addEventListener('click', function() {
-    var userName = inputUsername.value;
-    var passWord = inputPassword.value;
-
-    if (userName == myUser && passWord == myPass) {
-        alert('Đăng nhập thành công');
-    } else {
-        alert('Đăng nhập thất bại!');
-    }
-});
-*/
 var users = [
 	{
 		id: 1,
@@ -45,8 +26,11 @@ var users = [
 	}
 ];
 
-// localStorage.setItem('users', JSON.stringify(users));
+localStorage.setItem('users', JSON.stringify(users));
 var users = JSON.parse(localStorage.getItem('users'));
+
+
+//Load user
 function loadUser(arrUser) {
 	let userEle = '';
 	arrUser.forEach(element => {
@@ -121,6 +105,21 @@ function stringToSlug(str) {
 }
 
 
+// Update storage
+function updateUserStorage(_users) {
+	localStorage.setItem('users', JSON.stringify(_users));
+}
+
+// Get storage
+function getUserStorage() {
+	return JSON.parse(localStorage.getItem('users'));
+}
+
+// Get User by id
+function getUserById(uID) {
+	const users = getUserStorage();
+	return users.find(u => Number(u.id) === Number(uID)); //
+}
 
 // set last user id
 function setLastUserId() {
@@ -158,23 +157,6 @@ function addUser(){
 		resetForm()
 	}
 }
-
-// Update storage
-function updateUserStorage(_users) {
-	localStorage.setItem('users', JSON.stringify(_users));
-}
-
-// Get storage
-function getUserStorage() {
-	return JSON.parse(localStorage.getItem('users'));
-}
-
-// Get User by id
-function getUserById(uID) {
-	const users = getUserStorage();
-	return users.find(u => Number(u.id) === Number(uID)); //
-}
-
 
 //Modal delete
 // $('[data-action="btn-modal-delete"]').click(function(e){
