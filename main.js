@@ -45,22 +45,33 @@ var users = [
 	}
 ];
 
-//localStorage.setItem('users', JSON.stringify(users));
+// localStorage.setItem('users', JSON.stringify(users));
 var users = JSON.parse(localStorage.getItem('users'));
 function loadUser(arrUser) {
 	let userEle = '';
 	arrUser.forEach(element => {
 		userEle += `
       <tr>
-          <td>${element['id']}</td>
-          <td ><a href="./user_detail.html?user_id=${element['id']}" target="_bank"> ${element['name']} </a></td>
-          <td>${element['age']}</td>
-          <td>${element['address']}</td>
-		  <td><button type="button" class="btn btn-warning"
-		  data-bs-toggle="modal" data-bs-target="#modalUpdateUser"
-		  data-bs-whatever="@mdo" onclick="editUser(${element['id']})">Sửa</button></td>
-		  <td><button type="button" class="btn btn-danger" data-action="btn-modal-delete" 
-		  id="btn-del" data-value="${element['id']}">Xóa</button></td>	
+        <td>${element['id']}</td>
+        <td ><a href="./user_detail.html?user_id=${element['id']}" target="_bank"> ${element['name']} </a></td>
+        <td>${element['age']}</td>
+        <td>${element['address']}</td>
+		<td>
+		  	<button type="button" 
+			  	class="btn btn-warning"
+		  		data-bs-toggle="modal" 
+				data-bs-target="#modalUpdateUser"
+		  		data-bs-whatever="@mdo" 
+				onclick="editUser(${element['id']})">Sửa</button>
+		</td>
+		<td>
+		  	<button type="button" 
+			  	class="btn btn-danger" 
+				data-bs-toggle="modal" 
+				data-bs-target="#modalDelete"
+		  		data-bs-whatever="@mdo"  
+		  		onclick="deleteUser(${element['id']})">Xóa</button>
+		</td>	
       </tr>`;
 	});
 	document.getElementById('user-list').innerHTML = userEle;
@@ -109,8 +120,7 @@ function stringToSlug(str) {
 	return str;
 }
 
-//Add user
-// var data = users;
+
 
 // set last user id
 function setLastUserId() {
@@ -119,6 +129,7 @@ function setLastUserId() {
 }
 setLastUserId();
 
+// Reset value
 function resetForm() {
 	setLastUserId();
 	$("#name").val('');
@@ -126,6 +137,7 @@ function resetForm() {
 	$("#address").val('');
 }
 
+// Add user
 function addUser(){
 	var aId = Number($("#id").val());
 	var aName = document.getElementById('name').value;
@@ -147,38 +159,42 @@ function addUser(){
 	}
 }
 
+// Update storage
 function updateUserStorage(_users) {
 	localStorage.setItem('users', JSON.stringify(_users));
 }
 
+// Get storage
 function getUserStorage() {
 	return JSON.parse(localStorage.getItem('users'));
 }
 
+// Get User by id
 function getUserById(uID) {
 	const users = getUserStorage();
 	return users.find(u => Number(u.id) === Number(uID)); //
 }
 
-//Delete user
-// function deleteUser(id){
-// 	var deUser = data;
-// 		for (var i = 0; i < deUser.length; i++){
-// 			if (deUser[i].id==id){
-// 				deUser.splice(i,1);
-// 			}
-// 		}
-// 	loadUser(deUser);
-// 	localStorage.setItem('users', JSON.stringify(users));
-// }
 
 //Modal delete
-$('button[data-action="btn-modal-delete"]').click(function(e){
-	$("#modalDelete").modal('show');
-	const dID = Number(e.currentTarget.getAttribute('data-value'));
-	$('#btn-delete').data('user-id', dID);
-});
+// $('[data-action="btn-modal-delete"]').click(function(e){
+// 	$("#modalDelete").modal('show');
+// 	const dID = Number(e.currentTarget.getAttribute('data-value'));
+// 	$('#btn-delete').data('user-id', dID);
+// });
 
+function deleteUser(id){
+	const users = getUserStorage();
+	const _user = getUserById(id);
+	if (_user === undefined) {
+		alert('User Not Found !!!');
+		return;
+	}
+	$('#btn-delete').data('user-id', id);
+}
+
+
+//Delete user
 $('#btn-delete').click(function(id) {
 	const uID = $(this).data('user-id');
 	let users = getUserStorage();
@@ -198,7 +214,7 @@ $('#btn-delete').click(function(id) {
 })
 
 
-//Edit user
+//Modal edit
 function editUser(id){
 	const users = getUserStorage();
 	const _user = getUserById(id);
@@ -213,6 +229,7 @@ function editUser(id){
 	$('#btn-edit').data('user-id', id);
 }
 
+//Edit user
 $('#btn-edit').click(function(e) {
 	const uID = $(this).data('user-id'); //
 	let users = getUserStorage();
